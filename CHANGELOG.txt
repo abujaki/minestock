@@ -1,0 +1,9 @@
+Version History
+===============
+
+=====0.0.1 - Unstable
+Initial creation
+This version is pre-pre-pre-pre-beta. It is not yet functional nor tested
+Added:
+	Basic Bukkit/Vault framework
+	Basic commands and objects
