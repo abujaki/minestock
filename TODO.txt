@@ -1,0 +1,61 @@
+To Do list
+==========
+A.K.A The Roadmap
+A.K.A My gameplan
+
+Version 0.0.1
+[x] - Start Plugin
+[x] - Test
+
+Version 0.0.5
+[x] - Bukkit implementation
+[x] - Vault hooks
+	[x] - Economy hooks
+	[x] - Permission hooks
+	[/] - Chat hooks (Causing Errors, not needed anyway)
+[x] - Tested
+
+Version 0.1.0
+[x] - Interface layer
+	[x] - Receives commands
+	[x] - Parses command arguments properly
+	[x] - Relays error messages properly
+[x] - Tested
+
+Version 0.2.0
+[ ] - Records layer
+	[ ] - Stores all users' current stock amounts
+[ ] - Tested
+
+Version 0.3.0
+[ ] - Marketplace layer
+	[ ] - Transaction engine
+[ ] - Tested
+
+Version 0.5.0
+[ ] - Buy stocks complete
+[ ] - Sell stocks complete
+[ ] - Tested
+
+Version 0.!.0
+Mandatory before moving onto 1.0.0
+[ ] - Save plugin information
+	[ ] - Database
+	[ ] - Flat file
+	[ ] - ???
+[ ] - Tested
+
+[ ] - Load plugin information
+	[ ] - data
+	[ ] - preferences and configs
+[ ] - Tested
+
+Version 0.?.0
+Highly reccommended before moving onto 1.0.0
+[ ] - Check complete
+	[ ] - Stock price engine
+[ ] - Tested
+
+Version 1.0.0
+[ ] - Stable build release
+[ ] - TESTED and works (well enough)

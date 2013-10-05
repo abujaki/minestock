@@ -1,32 +1,25 @@
-author: Andrew Bujáki
-database: true
-depend: [Vault]
-description: A simple stock-trading plugin for Bukkit/Vault servers
-main: io.github.abujaki.minestock.Minestock
 name: MineStock
 version: 0.0.1
-#Commands
+description: A simple stock-trading plugin for Bukkit/Vault servers
+author: abujaki21
+website: http://abujaki21.github.io/minestock/
+main: io.github.abujaki.minestock.MineStock
+depend: [Vault]
 commands:
   stockbuy:
-    description:Place a buy order for a stock
-    usage:/stockbuy <stock> <amount> <priceEach>
-    permission:minestock.buy
-    permission-message:You do not have permission to buy stocks from the market.
+    description: Place a buy order for a stock
+    usage: /stockbuy <stock> <amount> <priceEach>
+    permission: minestock.buy
+    permission-message: You do not have permission to buy stocks from the market.
   stocksell:
-    description:Sell stocks on the stock market
-    usage:/stocksell <stock> <amount> <priceEach>
-    permission:minestock.sell
-    permission-message:You do not have permission to buy stocks from the market.
-  stockcheck:
-    description:Check stock data
-    usage:/stockcheck [stock]
-    permission:minestock.basic
-    permission-message:Something went seriously wrong. Complain to your admins.
-
-#Permission Nodes
+    description: Sell stocks on the stock market
+    usage: /stocksell <stock> <amount> <priceEach>
+    permission: minestock.sell
+    permission-message: You do not have permission to buy stocks from the market.
 permissions:
   minestock.basic:
     description: Allows a user to conduct basic transactions in the stock market
+    default: true
     children:
       minestock.buy: true
       minestock.sell: true

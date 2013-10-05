@@ -8,26 +8,45 @@ With that said, you're literally playing a stock market. Ingame losses are to be
 
 The project page can be found at https://github.com/abujaki21/minestock
 
--Version-
-0.0.1 - UNSTABLE
-This version is pre-pre-pre-pre-beta. It is not yet functional nor tested
+Version
+-------
+* 0.1.0 Stable/Unfunctional
+Added
++ Basic bukkit Framework
++ Vault Hooks for Permissions and Economy
++ Plugin loads with Bukkit
++ stockbuy and stocksell commands (See "/help minestock" for their uses)
++ Made a valiant effort at dummy-profing the commands
++ Returns semi-helpful error messages
+Known Issues
+! Vault chat hooks do not yet work properly
+! The plugin is still quite non-functional
 
-For past versions, see the changelog
+For past versions, consult the changelog
 
--Requirements-
-Requires the latest version of Bukkit running on your minecraft server, found at http://bukkit.org
-Also requires the latest version of Vault, downloadable at http://dev.bukkit.org/bukkit-plugins/vault/
-Should have a vault-compatible permissions and economy system
+Requirements
+------------
+* The latest version of Bukkit running on your minecraft server, found at http://bukkit.org
+	Last tested with Bukkit Dev Build 1.6.4-R0.1
+* The latest version of Vault, downloadable at http://dev.bukkit.org/bukkit-plugins/vault/
+	Last tested with Vault 1.2.27 for CB 1.6.2-R0.1
+* a vault-compatible permissions and economy system
 
--Installation-
+Installation
+------------
 Drag and Drop the MineStock.jar file into your bukkit plugins folder, then Restart your server.
 
--FAQ-
+
+FAQ
+---
 Q: Why?
+
 A: Why not?
+
 A: I was bored.
+
 A: FOR SCIENCE!
 
--Contributors-
-myself!
-
+Contributors
+------------
+myself (so far)

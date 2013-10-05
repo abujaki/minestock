@@ -1,6 +1,6 @@
 /****************************************************\
  * MineStock Bukkit/Vault Plugin					*
- * Author: Andrew Bujáki							*
+ * Author: abujaki21							    *
  * Version: 0.0.1									*
  * Description: Stock trading plugin for vault and	*
  * 	Bukkit-enabled minecraft servers				*
@@ -46,44 +46,77 @@ public class MineStock extends JavaPlugin {
  
     public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args){
     	if(command.getLabel().equalsIgnoreCase("stockbuy")){
+    		//stockbuy stock amount priceeach
     		if(!(sender instanceof Player)){
     			sender.sendMessage("This command requires you to be a logged in player");
     			return true;
     		}
-    		else return buystock();
+    		else{
+    	    	//Check to see if we have 3 arguments
+    			if (args.length > 4) {
+    		           sender.sendMessage("Too many arguments");
+    		           return false;
+    		        } 
+    		        if (args.length < 2) {
+    		           sender.sendMessage("Not enough arguments");
+    		           return false;
+    		        }
+    		    //Convert args 2 and 3 to integers
+    	    	try{
+    		    int amt = Integer.parseInt(args[1]);
+    	    	int price = Integer.parseInt(args[2]);    	    	
+    	    		if ((amt <= 0)||(price <= 0)){ //Smartass check
+    	    			sender.sendMessage("You cannot buy with negative values.");
+    	    			return false;
+    	    		}
+    	    		else return buyStock(sender, args[0], amt, price);	//-----------Finally run the buystock code
+    	    	}
+    	    	catch(NumberFormatException e){
+    	    		return false; //arg 1 or 2 was not a number
+    	    	}
+    		}
     	}else if(command.getLabel().equalsIgnoreCase("stocksell")){
+    		//stockbuy stock amount priceeach
     		if(!(sender instanceof Player)){
     			sender.sendMessage("This command requires you to be a logged in player");
     			return true;
     		}
-    		else{ return sellstock();}
-    	}else if(command.getLabel().equalsIgnoreCase("stockcheck")){
-    		if(args.equals(null)){
-    			return checkstock();
-    		}else{
-    			return checkstock(args[1]);
+    		else{
+    			//Check to see if we have 3 arguments
+    			if (args.length > 4) {
+    		           sender.sendMessage("Too many arguments");
+    		           return false;
+    		        } 
+    		        if (args.length < 2) {
+    		           sender.sendMessage("Not enough arguments");
+    		           return false;
+    		        }
+    		    //Convert args 2 and 3 to integers
+    	    	try{
+    		    int amt = Integer.parseInt(args[1]);
+    	    	int price = Integer.parseInt(args[2]);    	    	
+    	    		if ((amt <= 0)||(price <= 0)){ //Smartass check
+    	    			sender.sendMessage("You cannot buy with negative values.");
+    	    			return false;
+    	    		}
+    	    		else return sellStock(sender, args[0], amt, price); //-----------Finally run the sellstock code
+    	    	}
+    	    	catch(NumberFormatException e){
+    	    		return false; //arg 1 or 2 was not a number
+    	    	}
     		}
-    	}
-    	return false;
+    	}else return false;
     }
 
-    private boolean buystock(){
+    private boolean buyStock(CommandSender sender, String stock, int amount, int priceEach){
     	//function to place a stock order
-    	
+    	sender.sendMessage("You wish to buy " + String.valueOf(amount) + " of " + stock + " stock at " + String.valueOf(priceEach) + ".");
     	return true;
     }
     
-    private boolean sellstock(){
+    private boolean sellStock(CommandSender sender, String stock, int amount, int priceEach){
     	//function to put stocks up for sale
-    	return true;
-    }
-    
-    private boolean checkstock(String stock){
-    	//Print out stock info to commandsender
-    	return true;
-    }
-    private boolean checkstock(){
-    	//Print out ticker to commandsender
+    	sender.sendMessage("You wish to sell " + String.valueOf(amount) + " of " + stock + " stock at " + String.valueOf(priceEach) + ".");
     	return true;
     }
     
@@ -102,8 +135,14 @@ public class MineStock extends JavaPlugin {
 
     private boolean setupChat() {
         RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager().getRegistration(Chat.class);
+        try{
         chat = rsp.getProvider();
         return chat != null;
+        }
+        catch(NullPointerException e){
+        	log.severe("Error in getting chat provider");
+        	return false;
+        }
     }
 
     private boolean setupPermissions() {
@@ -113,7 +152,7 @@ public class MineStock extends JavaPlugin {
     }
 //End of Vault Setups
     
-//Demo Vault code for Reference and Lolz
+//Demo Vault code for Reference
 /*
     public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
         if(!(sender instanceof Player)) {

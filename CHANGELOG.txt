@@ -1,9 +1,14 @@
 Version History
 ===============
 
-=====0.0.1 - Unstable
-Initial creation
-This version is pre-pre-pre-pre-beta. It is not yet functional nor tested
-Added:
-	Basic Bukkit/Vault framework
-	Basic commands and objects
+=====0.1.0 Stable yet Non-functional
+Added
++ Basic bukkit Framework
++ Vault Hooks for Permissions and Economy
++ Plugin loads with Bukkit
++ stockbuy and stocksell commands (See "/help minestock" for their uses)
++ Made a valiant effort at dummy-profing the commands
++ Returns semi-helpful error messages
+Known Issues
+! Vault chat hooks do not yet work properly
+! The plugin is still quite non-functional 
