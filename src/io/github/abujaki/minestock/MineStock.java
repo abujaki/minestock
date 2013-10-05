@@ -1,7 +1,7 @@
 /****************************************************\
  * MineStock Bukkit/Vault Plugin					*
  * Author: abujaki21							    *
- * Version: 0.0.1									*
+ * Version: 0.1.0 Pre-alpha 132892					*
  * Description: Stock trading plugin for vault and	*
  * 	Bukkit-enabled minecraft servers				*
 \****************************************************/
@@ -53,11 +53,11 @@ public class MineStock extends JavaPlugin {
     		}
     		else{
     	    	//Check to see if we have 3 arguments
-    			if (args.length > 4) {
+    			if (args.length >= 4) {
     		           sender.sendMessage("Too many arguments");
     		           return false;
     		        } 
-    		        if (args.length < 2) {
+    		        if (args.length <= 2) {
     		           sender.sendMessage("Not enough arguments");
     		           return false;
     		        }
@@ -83,11 +83,11 @@ public class MineStock extends JavaPlugin {
     		}
     		else{
     			//Check to see if we have 3 arguments
-    			if (args.length > 4) {
+    			if (args.length >= 4) {
     		           sender.sendMessage("Too many arguments");
     		           return false;
     		        } 
-    		        if (args.length < 2) {
+    		        if (args.length <= 2) {
     		           sender.sendMessage("Not enough arguments");
     		           return false;
     		        }

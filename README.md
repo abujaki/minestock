@@ -10,7 +10,8 @@ The project page can be found at https://github.com/abujaki21/minestock
 
 Version
 -------
-* 0.1.0 Stable/Unfunctional
+v0.1.0 Stable/Unfunctional
+
 Added
 + Basic bukkit Framework
 + Vault Hooks for Permissions and Economy
