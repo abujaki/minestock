@@ -13,7 +13,10 @@ public class TransactionEngine {
 	
 	public void submitBuyOrder(StockOrder buyOrder){
 		//Take the money
-		MineStock.econ.withdrawPlayer(buyOrder.getPlayer(), buyOrder.getPurse());
+		MineStock.econ.withdrawPlayer(buyOrder.getPlayer(), buyOrder.getPrice() * buyOrder.getAmount());
+		//TODO: Remember to remove the code in the MineStock.java that does the exact same thing
+		//Else players will be double-billed
+		
 		//run
 		match(buyOrder, true);
 	}

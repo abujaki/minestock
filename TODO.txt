@@ -28,8 +28,13 @@ Version 0.2.0
 [ ] - Tested
 
 Version 0.3.0
-[ ] - Marketplace layer
-	[ ] - Transaction engine
+[x] - Marketplace layer
+	[x] - Transaction engine
+	[ ] - Works with interface layer
+		[x] - does economy transfers
+		[ ] - sends messages
+	[ ] - Works with Records layer
+		[ ] - transfers stocks correctly
 [ ] - Tested
 
 Version 0.5.0
@@ -40,20 +45,23 @@ Version 0.5.0
 Version 0.!.0
 Mandatory before moving onto 1.0.0
 [ ] - Save plugin information
-	[ ] - Database
-	[ ] - Flat file
-	[ ] - ???
+	[ ] - Interface Layer
+	[ ] - Transaction Layer
+	[ ] - Records Layer
 [ ] - Tested
 
 [ ] - Load plugin information
-	[ ] - data
+	[ ] - Layer data
 	[ ] - preferences and configs
 [ ] - Tested
 
 Version 0.?.0
 Highly reccommended before moving onto 1.0.0
-[ ] - Check complete
-	[ ] - Stock price engine
+[ ] - Check stocks
+	[ ] - Stock current price estimator
+	[ ] - Currently owned stocks
+[ ] - Cancel stock order
+
 [ ] - Tested
 
 Version 1.0.0

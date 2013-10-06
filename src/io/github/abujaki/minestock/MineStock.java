@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
-//import net.milkbowl.vault.economy.EconomyResponse;
+import net.milkbowl.vault.economy.EconomyResponse;
 import net.milkbowl.vault.permission.Permission;
 
 import org.bukkit.command.Command;
@@ -26,11 +26,14 @@ public class MineStock extends JavaPlugin {
     public static Economy econ = null;
     public static Permission perms = null;
     public static Chat chat = null;
-
+    //private TransactionEngine transactionEngine = new TransactionEngine();
+    
+    
 //Enabler and Disabler
     @Override
     public void onDisable() {
         log.info(String.format("[%s] Disabled Version %s", getDescription().getName(), getDescription().getVersion()));
+        //transactionEngine.save(); will save unresolved orders to file 
     }
 
     @Override
@@ -42,6 +45,7 @@ public class MineStock extends JavaPlugin {
         }
         setupPermissions();
         setupChat();
+        //transactionEngine.load(); will load the unresolved orders from file
     }
  
     public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args){
@@ -111,12 +115,31 @@ public class MineStock extends JavaPlugin {
     private boolean buyStock(CommandSender sender, String stock, int amount, int priceEach){
     	//function to place a stock order
     	sender.sendMessage("You wish to buy " + String.valueOf(amount) + " of " + stock + " stock at " + String.valueOf(priceEach) + ".");
+    	if(econ.getBalance(sender.getName()) >= (amount * priceEach)){	
+    		econ.withdrawPlayer(sender.getName(), amount*priceEach);
+    	} else {
+    		sender.sendMessage("You don't have enough money to make that order");
+    	}
     	return true;
     }
     
-    private boolean sellStock(CommandSender sender, String stock, int amount, int priceEach){
+    @SuppressWarnings("unused") //TODO - Remove when stock-checking code is implemented
+	private boolean sellStock(CommandSender sender, String stock, int amount, int priceEach){
     	//function to put stocks up for sale
     	sender.sendMessage("You wish to sell " + String.valueOf(amount) + " of " + stock + " stock at " + String.valueOf(priceEach) + ".");
+    	if(true){//TODO: Check to see if there's enough stocks to sell
+    		EconomyResponse r = econ.withdrawPlayer(sender.getName(), amount * priceEach);
+    		
+    		//copypasta from example code
+    		if(r.transactionSuccess()) {
+    			sender.sendMessage(String.format("You were paid %s and now have %s", econ.format(r.amount), econ.format(r.balance)));
+    		} else {
+    			sender.sendMessage(String.format("An error occured: %s", r.errorMessage));
+    		}
+    	} else {
+    		sender.sendMessage("You don't have that many stocks to sell");
+    		return false;
+    	}
     	return true;
     }
     

@@ -4,16 +4,20 @@ package io.github.abujaki.minestock;
 
 public class StockOrder {
 	private String stk, pl;
-	private int amt, price;
+	private int amt; 
+	private double price;
+	
 	//Stock order has stock code, amount, price per stock, and controlling user; 
 	
 	StockOrder(String stock, int amount, int priceEach, String player){
-		stk = stock; amt = amount; price = priceEach; pl = player; 
+		stk = stock; amt = amount; price = priceEach; pl = player;
 	}
 	
 	//Decrease amount of stocks in the order
-	boolean decreaseStock(){return decreaseStock(1);}
-	boolean decreaseStock(int by){
+	public boolean decreaseStock(){return decreaseStock(1);}
+	public boolean decreaseStock(int by){
+		//Due to code in Transaction Engine doing the checking,
+		//This check may be removed shortly
 		if (amt >= by){
 			amt -= by;
 			return true;
@@ -30,8 +34,9 @@ public class StockOrder {
 	*/
 	
 	//The usual getters
-	int getAmount(){return amt;}
-	String getStock(){return stk;}
-	int getPrice(){return price;}
-	String getPlayer(){return pl;}
+	public int getAmount(){return amt;}
+	public String getStock(){return stk;}
+	public double getPrice(){return price;}
+	public String getPlayer(){return pl;}
+	
 }
