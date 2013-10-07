@@ -116,7 +116,14 @@ public class MineStock extends JavaPlugin {
     	//function to place a stock order
     	sender.sendMessage("You wish to buy " + String.valueOf(amount) + " of " + stock + " stock at " + String.valueOf(priceEach) + ".");
     	if(econ.getBalance(sender.getName()) >= (amount * priceEach)){	
-    		econ.withdrawPlayer(sender.getName(), amount*priceEach);
+    		EconomyResponse r = econ.withdrawPlayer(sender.getName(), amount*priceEach);
+    		//Copypasta from example code
+    		if(r.transactionSuccess()) {
+    			sender.sendMessage(String.format("You paid %s and now have %s", econ.format(r.amount), econ.format(r.balance)));
+    			//transactionEngine.submitBuyOrder(new StockOrder(stock, amount, priceEach, sender.getName()); //Or something to that effect
+    		} else {
+    			sender.sendMessage(String.format("An error occured: %s", r.errorMessage));
+    		}
     	} else {
     		sender.sendMessage("You don't have enough money to make that order");
     	}
@@ -128,7 +135,7 @@ public class MineStock extends JavaPlugin {
     	//function to put stocks up for sale
     	sender.sendMessage("You wish to sell " + String.valueOf(amount) + " of " + stock + " stock at " + String.valueOf(priceEach) + ".");
     	if(true){//TODO: Check to see if there's enough stocks to sell
-    		EconomyResponse r = econ.withdrawPlayer(sender.getName(), amount * priceEach);
+    		EconomyResponse r = econ.depositPlayer(sender.getName(), amount * priceEach);
     		
     		//copypasta from example code
     		if(r.transactionSuccess()) {
