@@ -31,4 +31,12 @@ public class MemoryCard {
 		}
 		return false;
 	}
+	public boolean registerStock(Stock stock){
+		if(stockList.containsKey(stock.getCode())){
+			//That code is already taken in the list. Reject
+			return false;
+		}
+		stockList.put(stock.getCode(), stock);
+		return true;
+	}
 }
