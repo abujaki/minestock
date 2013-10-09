@@ -26,6 +26,7 @@ public class MineStock extends JavaPlugin {
     public static Economy econ = null;
     public static Permission perms = null;
     public static Chat chat = null;
+    protected static MemoryCard memoryCard;
     //private TransactionEngine transactionEngine = new TransactionEngine();
     
     

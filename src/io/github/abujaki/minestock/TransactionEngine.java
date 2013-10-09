@@ -115,10 +115,10 @@ public class TransactionEngine {
 		}
 	}
 	private void removeStock(String player, String stock, int amount){
-		//TODO: Code to work with storage layer to remove amount of stock from player
+		MineStock.memoryCard.removeStocks(player, stock, amount);
 	}
 	
 	private void addStock(String player, String stock, int amount){
-		//TODO: Code to work with the storage layer to give player amount of stock
+		MineStock.memoryCard.addStocks(player, stock, amount);
 	}
 }
