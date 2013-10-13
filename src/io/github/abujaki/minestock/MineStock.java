@@ -128,14 +128,14 @@ public class MineStock extends JavaPlugin {
     	} else {
     		sender.sendMessage("You don't have enough money to make that order");
     	}
+    	sender.sendMessage(String.format("You now have %s of %s stock", memoryCard.checkStockAmount(sender.getName(), stock),stock));
     	return true;
     }
     
-    @SuppressWarnings("unused") //TODO - Remove when stock-checking code is implemented
 	private boolean sellStock(CommandSender sender, String stock, int amount, int priceEach){
     	//function to put stocks up for sale
     	sender.sendMessage("You wish to sell " + String.valueOf(amount) + " of " + stock + " stock at " + String.valueOf(priceEach) + ".");
-    	if(true){//TODO: Check to see if there's enough stocks to sell
+    	if(amount >= memoryCard.checkStockAmount(sender.getName(), stock)){
     		EconomyResponse r = econ.depositPlayer(sender.getName(), amount * priceEach);
     		
     		//copypasta from example code
@@ -148,6 +148,7 @@ public class MineStock extends JavaPlugin {
     		sender.sendMessage("You don't have that many stocks to sell");
     		return false;
     	}
+    	sender.sendMessage(String.format("You now have %s of %s stock", memoryCard.checkStockAmount(sender.getName(), stock),stock));
     	return true;
     }
     
