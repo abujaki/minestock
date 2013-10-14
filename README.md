@@ -10,16 +10,16 @@ The project page can be found at https://github.com/abujaki21/minestock
 
 Version
 -------
-v0.1.3 Developing
+v0.4.9 Developing build 132942
 
-Added
-+ Added Transaction Engine
-+ Added Economy lines to test
-~ Changed StockOrder.price to double to jive naturally with economy
-Known Issues
-! Vault chat hooks do not yet work properly
-! The plugin is still quite non-functional
-! Untested on server as of 0.1.0
++ Storage Layer
++ Methods to create orders
++ Everything's starting to work together
+
+Known Issues:
+! SUPER CRAZY UNTESTED AT THIS POINT
+! Everything's held together with a lick and a promise at this point
+! Just because there are no compile errors does not mean it won't doom us all
 
 For past versions, consult the changelog
 

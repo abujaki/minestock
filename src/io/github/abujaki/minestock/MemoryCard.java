@@ -2,6 +2,7 @@ package io.github.abujaki.minestock;
 
 import java.util.HashMap;
 
+
 public class MemoryCard {
 	private HashMap<String, Stock> stockList;
 	private HashMap<String, Integer> ownedStock;

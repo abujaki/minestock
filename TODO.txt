@@ -23,29 +23,30 @@ Version 0.1.0
 [x] - Tested
 
 Version 0.2.0
-[ ] - Records layer
-	[ ] - Stores all users' current stock amounts
+[X] - Records layer
+	[X] - Stores all users' current stock amounts
+	[X] - Stores all current active stocks
 [ ] - Tested
 
 Version 0.3.0
 [x] - Marketplace layer
 	[x] - Transaction engine
-	[ ] - Works with interface layer
+	[x] - Works with interface layer
 		[x] - does economy transfers
-		[ ] - sends messages
-	[ ] - Works with Records layer
-		[ ] - transfers stocks correctly
+		[/] - sends messages (Checks done in interface layer)
+	[x] - Works with Records layer
+		[x] - transfers stocks correctly
 [ ] - Tested
 
 Version 0.5.0
-[ ] - Buy stocks complete
-[ ] - Sell stocks complete
+[x] - Buy stocks complete
+[x] - Sell stocks complete
 [ ] - Tested
 
 Version 0.!.0
 Mandatory before moving onto 1.0.0
 [ ] - Save plugin information
-	[ ] - Interface Layer
+	[/] - Interface Layer (No data here)
 	[ ] - Transaction Layer
 	[ ] - Records Layer
 [ ] - Tested

@@ -1,7 +1,7 @@
 /****************************************************\
  * MineStock Bukkit/Vault Plugin					*
  * Author: abujaki21							    *
- * Version: 0.1.0 Pre-alpha 132892					*
+ * Version: 0.4.9 Pre-alpha 132942					*
  * Description: Stock trading plugin for vault and	*
  * 	Bukkit-enabled minecraft servers				*
 \****************************************************/
@@ -25,8 +25,8 @@ public class MineStock extends JavaPlugin {
 	private static final Logger log = Logger.getLogger("Minecraft");
 	public static Economy econ = null;
 	public static Permission perms = null;
-	public static Chat chat = null;
-	protected static MemoryCard memoryCard;
+	public static Chat chat = null; //May be removed entirely. Not important, and throws NPEs
+	//protected static MemoryCard memoryCard;
 	protected TransactionEngine transactionEngine = new TransactionEngine();
 
 
@@ -129,20 +129,20 @@ public class MineStock extends JavaPlugin {
 		} else {
 			sender.sendMessage("You don't have enough money to make that order");
 		}
-		sender.sendMessage(String.format("You now have %s of %s stock", memoryCard.checkStockAmount(sender.getName(), stock),stock));
+		sender.sendMessage(String.format("You now have %s of %s stock", transactionEngine.checkStockAmount(sender.getName(), stock),stock));
 		return true;
 	}
 
 	private boolean sellStock(CommandSender sender, String stock, int amount, int priceEach){
 		//function to put stocks up for sale
 		sender.sendMessage("You wish to sell " + String.valueOf(amount) + " of " + stock + " stock at " + String.valueOf(priceEach) + ".");
-		if(amount >= memoryCard.checkStockAmount(sender.getName(), stock)){
+		if(amount >= transactionEngine.checkStockAmount(sender.getName(), stock)){
 			transactionEngine.match(new StockOrder(stock, amount, priceEach, sender.getName()), false);
 		} else {
 			sender.sendMessage(String.format("You don't have enough stocks to sell %s", amount));
 			return false;
 		}
-		sender.sendMessage(String.format("You now have %s of %s stock", memoryCard.checkStockAmount(sender.getName(), stock),stock));
+		sender.sendMessage(String.format("You now have %s of %s stock", transactionEngine.checkStockAmount(sender.getName(), stock),stock));
 		return true;
 	}
 
