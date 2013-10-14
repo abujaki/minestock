@@ -9,7 +9,7 @@ public class StockOrder {
 	
 	//Stock order has stock code, amount, price per stock, and controlling user; 
 	
-	StockOrder(String stock, int amount, int priceEach, String player){
+	StockOrder(String stock, int amount, double priceEach, String player){
 		stk = stock; amt = amount; price = priceEach; pl = player;
 	}
 	
@@ -32,6 +32,11 @@ public class StockOrder {
 		return true;
 	}
 	*/
+	
+	//Setter
+	public void setAmount(int amount){
+		amt = amount;
+	}
 	
 	//The usual getters
 	public int getAmount(){return amt;}

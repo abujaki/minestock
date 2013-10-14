@@ -22,170 +22,166 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class MineStock extends JavaPlugin {
 
-    private static final Logger log = Logger.getLogger("Minecraft");
-    public static Economy econ = null;
-    public static Permission perms = null;
-    public static Chat chat = null;
-    protected static MemoryCard memoryCard;
-    //private TransactionEngine transactionEngine = new TransactionEngine();
-    
-    
-//Enabler and Disabler
-    @Override
-    public void onDisable() {
-        log.info(String.format("[%s] Disabled Version %s", getDescription().getName(), getDescription().getVersion()));
-        //transactionEngine.save(); will save unresolved orders to file 
-    }
+	private static final Logger log = Logger.getLogger("Minecraft");
+	public static Economy econ = null;
+	public static Permission perms = null;
+	public static Chat chat = null;
+	protected static MemoryCard memoryCard;
+	protected TransactionEngine transactionEngine = new TransactionEngine();
 
-    @Override
-    public void onEnable() {
-        if (!setupEconomy() ) {
-            log.severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
-        setupPermissions();
-        setupChat();
-        //transactionEngine.load(); will load the unresolved orders from file
-    }
- 
-    public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args){
-    	if(command.getLabel().equalsIgnoreCase("stockbuy")){
-    		//stockbuy stock amount priceeach
-    		if(!(sender instanceof Player)){
-    			sender.sendMessage("This command requires you to be a logged in player");
-    			return true;
-    		}
-    		else{
-    	    	//Check to see if we have 3 arguments
-    			if (args.length >= 4) {
-    		           sender.sendMessage("Too many arguments");
-    		           return false;
-    		        } 
-    		        if (args.length <= 2) {
-    		           sender.sendMessage("Not enough arguments");
-    		           return false;
-    		        }
-    		    //Convert args 2 and 3 to integers
-    	    	try{
-    		    int amt = Integer.parseInt(args[1]);
-    	    	int price = Integer.parseInt(args[2]);    	    	
-    	    		if ((amt <= 0)||(price <= 0)){ //Smartass check
-    	    			sender.sendMessage("You cannot buy with negative values.");
-    	    			return false;
-    	    		}
-    	    		else return buyStock(sender, args[0], amt, price);	//-----------Finally run the buystock code
-    	    	}
-    	    	catch(NumberFormatException e){
-    	    		return false; //arg 1 or 2 was not a number
-    	    	}
-    		}
-    	}else if(command.getLabel().equalsIgnoreCase("stocksell")){
-    		//stockbuy stock amount priceeach
-    		if(!(sender instanceof Player)){
-    			sender.sendMessage("This command requires you to be a logged in player");
-    			return true;
-    		}
-    		else{
-    			//Check to see if we have 3 arguments
-    			if (args.length >= 4) {
-    		           sender.sendMessage("Too many arguments");
-    		           return false;
-    		        } 
-    		        if (args.length <= 2) {
-    		           sender.sendMessage("Not enough arguments");
-    		           return false;
-    		        }
-    		    //Convert args 2 and 3 to integers
-    	    	try{
-    		    int amt = Integer.parseInt(args[1]);
-    	    	int price = Integer.parseInt(args[2]);    	    	
-    	    		if ((amt <= 0)||(price <= 0)){ //Smartass check
-    	    			sender.sendMessage("You cannot buy with negative values.");
-    	    			return false;
-    	    		}
-    	    		else return sellStock(sender, args[0], amt, price); //-----------Finally run the sellstock code
-    	    	}
-    	    	catch(NumberFormatException e){
-    	    		return false; //arg 1 or 2 was not a number
-    	    	}
-    		}
-    	}else return false;
-    }
 
-    private boolean buyStock(CommandSender sender, String stock, int amount, int priceEach){
-    	//function to place a stock order
-    	sender.sendMessage("You wish to buy " + String.valueOf(amount) + " of " + stock + " stock at " + String.valueOf(priceEach) + ".");
-    	if(econ.getBalance(sender.getName()) >= (amount * priceEach)){	
-    		EconomyResponse r = econ.withdrawPlayer(sender.getName(), amount*priceEach);
-    		//Copypasta from example code
-    		if(r.transactionSuccess()) {
-    			sender.sendMessage(String.format("You paid %s and now have %s", econ.format(r.amount), econ.format(r.balance)));
-    			//transactionEngine.submitBuyOrder(new StockOrder(stock, amount, priceEach, sender.getName()); //Or something to that effect
-    		} else {
-    			sender.sendMessage(String.format("An error occured: %s", r.errorMessage));
-    		}
-    	} else {
-    		sender.sendMessage("You don't have enough money to make that order");
-    	}
-    	sender.sendMessage(String.format("You now have %s of %s stock", memoryCard.checkStockAmount(sender.getName(), stock),stock));
-    	return true;
-    }
-    
+	//Enabler and Disabler
+	@Override
+	public void onDisable() {
+		log.info(String.format("[%s] Disabled Version %s", getDescription().getName(), getDescription().getVersion()));
+		//transactionEngine.save(); will save unresolved orders to file 
+	}
+
+	@Override
+	public void onEnable() {
+		if (!setupEconomy() ) {
+			log.severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
+			getServer().getPluginManager().disablePlugin(this);
+			return;
+		}
+		setupPermissions();
+		setupChat();
+		//transactionEngine.load(); will load the unresolved orders from file
+	}
+
+	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args){
+		if(command.getLabel().equalsIgnoreCase("stockbuy")){
+			//stockbuy stock amount priceeach
+			if(!(sender instanceof Player)){
+				sender.sendMessage("This command requires you to be a logged in player");
+				return true;
+			}
+			else{
+				//Check to see if we have 3 arguments
+				if (args.length >= 4) {
+					sender.sendMessage("Too many arguments");
+					return false;
+				} 
+				if (args.length <= 2) {
+					sender.sendMessage("Not enough arguments");
+					return false;
+				}
+				//Convert args 2 and 3 to integers
+				try{
+					int amt = Integer.parseInt(args[1]);
+					int price = Integer.parseInt(args[2]);    	    	
+					if ((amt <= 0)||(price <= 0)){ //Smartass check
+						sender.sendMessage("You cannot buy with negative values.");
+						return false;
+					}
+					else return buyStock(sender, args[0], amt, price);	//-----------Finally run the buystock code
+				}
+				catch(NumberFormatException e){
+					return false; //arg 1 or 2 was not a number
+				}
+			}
+		}else if(command.getLabel().equalsIgnoreCase("stocksell")){
+			//stockbuy stock amount priceeach
+			if(!(sender instanceof Player)){
+				sender.sendMessage("This command requires you to be a logged in player");
+				return true;
+			}
+			else{
+				//Check to see if we have 3 arguments
+				if (args.length >= 4) {
+					sender.sendMessage("Too many arguments");
+					return false;
+				} 
+				if (args.length <= 2) {
+					sender.sendMessage("Not enough arguments");
+					return false;
+				}
+				//Convert args 2 and 3 to integers
+				try{
+					int amt = Integer.parseInt(args[1]);
+					int price = Integer.parseInt(args[2]);    	    	
+					if ((amt <= 0)||(price <= 0)){ //Smartass check
+						sender.sendMessage("You cannot buy with negative values.");
+						return false;
+					}
+					else return sellStock(sender, args[0], amt, price); //-----------Finally run the sellstock code
+				}
+				catch(NumberFormatException e){
+					return false; //arg 1 or 2 was not a number
+				}
+			}
+		}else return false;
+	}
+
+	private boolean buyStock(CommandSender sender, String stock, int amount, int priceEach){
+		//function to place a stock order
+		sender.sendMessage("You wish to buy " + String.valueOf(amount) + " of " + stock + " stock at " + String.valueOf(priceEach) + ".");
+		//If the user has enough money, deduct that much and place a stock order.
+		if(econ.getBalance(sender.getName()) >= (amount * priceEach)){
+			EconomyResponse r = econ.withdrawPlayer(sender.getName(), amount*priceEach);
+			//Copypasta from example code
+			if(r.transactionSuccess()) {
+				sender.sendMessage(String.format("You paid %s and now have %s", econ.format(r.amount), econ.format(r.balance)));
+				transactionEngine.match(new StockOrder(stock, amount, priceEach, sender.getName()), true);
+			} else {
+				sender.sendMessage(String.format("An error occured: %s", r.errorMessage));
+			}
+		} else {
+			sender.sendMessage("You don't have enough money to make that order");
+		}
+		sender.sendMessage(String.format("You now have %s of %s stock", memoryCard.checkStockAmount(sender.getName(), stock),stock));
+		return true;
+	}
+
 	private boolean sellStock(CommandSender sender, String stock, int amount, int priceEach){
-    	//function to put stocks up for sale
-    	sender.sendMessage("You wish to sell " + String.valueOf(amount) + " of " + stock + " stock at " + String.valueOf(priceEach) + ".");
-    	if(amount >= memoryCard.checkStockAmount(sender.getName(), stock)){
-    		EconomyResponse r = econ.depositPlayer(sender.getName(), amount * priceEach);
-    		
-    		//copypasta from example code
-    		if(r.transactionSuccess()) {
-    			sender.sendMessage(String.format("You were paid %s and now have %s", econ.format(r.amount), econ.format(r.balance)));
-    		} else {
-    			sender.sendMessage(String.format("An error occured: %s", r.errorMessage));
-    		}
-    	} else {
-    		sender.sendMessage("You don't have that many stocks to sell");
-    		return false;
-    	}
-    	sender.sendMessage(String.format("You now have %s of %s stock", memoryCard.checkStockAmount(sender.getName(), stock),stock));
-    	return true;
-    }
-    
-//Vault Setup Block
-    private boolean setupEconomy() {
-        if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            return false;
-        }
-        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) {
-            return false;
-        }
-        econ = rsp.getProvider();
-        return econ != null;
-    }
+		//function to put stocks up for sale
+		sender.sendMessage("You wish to sell " + String.valueOf(amount) + " of " + stock + " stock at " + String.valueOf(priceEach) + ".");
+		if(amount >= memoryCard.checkStockAmount(sender.getName(), stock)){
+			transactionEngine.match(new StockOrder(stock, amount, priceEach, sender.getName()), false);
+		} else {
+			sender.sendMessage(String.format("You don't have enough stocks to sell %s", amount));
+			return false;
+		}
+		sender.sendMessage(String.format("You now have %s of %s stock", memoryCard.checkStockAmount(sender.getName(), stock),stock));
+		return true;
+	}
 
-    private boolean setupChat() {
-        RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager().getRegistration(Chat.class);
-        try{
-        chat = rsp.getProvider();
-        return chat != null;
-        }
-        catch(NullPointerException e){
-        	log.severe("Error in getting chat provider");
-        	return false;
-        }
-    }
+	//Vault Setup Block
+	private boolean setupEconomy() {
+		if (getServer().getPluginManager().getPlugin("Vault") == null) {
+			return false;
+		}
+		RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+		if (rsp == null) {
+			return false;
+		}
+		econ = rsp.getProvider();
+		return econ != null;
+	}
 
-    private boolean setupPermissions() {
-        RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
-        perms = rsp.getProvider();
-        return perms != null;
-    }
-//End of Vault Setups
-    
-//Demo Vault code for Reference
-/*
+	private boolean setupChat() {
+		RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager().getRegistration(Chat.class);
+		try{
+			chat = rsp.getProvider();
+			return chat != null;
+		}
+		catch(NullPointerException e){
+			//Yaknow, it may be because the testing server doesn't have a chat set up.....
+			//TODO: See if this error goes away when there's a chat plugin...
+			log.severe("Error in getting chat provider");
+			return false;
+		}
+	}
+
+	private boolean setupPermissions() {
+		RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
+		perms = rsp.getProvider();
+		return perms != null;
+	}
+	//End of Vault Setups
+
+	//Demo Vault code for Reference
+	/*
     public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
         if(!(sender instanceof Player)) {
             log.info("Only players are supported for this Example Plugin, but you should not do this!!!");
@@ -215,7 +211,7 @@ public class MineStock extends JavaPlugin {
         } else {
             return false;
         }}
-*/
-    //End of Demo code
-    
+	 */
+	//End of Demo code
+
 }//End of Class

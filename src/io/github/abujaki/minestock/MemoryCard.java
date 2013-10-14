@@ -5,13 +5,13 @@ import java.util.HashMap;
 public class MemoryCard {
 	private HashMap<String, Stock> stockList;
 	private HashMap<String, Integer> ownedStock;
-		
+
 	MemoryCard(){
-		 stockList = new HashMap<String, Stock>();
-		 ownedStock = new HashMap<String, Integer>();
+		stockList = new HashMap<String, Stock>();
+		ownedStock = new HashMap<String, Integer>();
 	}
-	
-	private String Pair(String player, String stock){
+
+	private String pair(String player, String stock){
 		return(stock.concat(".".concat(player)));
 	}
 	/*//Perhaps needed later for recovering information about the stocks
@@ -20,45 +20,37 @@ public class MemoryCard {
 		String exc[] = pair.split(".");
 		return exc[0];
 	}
-	
+
 	private String DepairPlayer(String pair){
 		String exc[] = pair.split(".");
 		return exc[1];
 	}
-	*/
+	 */
 	public void load(){
 		//Load files into memory
 	}
 	public void save(){
 		//Save files to memory
 	}
-	
-	public void addStocks(String player, String stock, int amount){
-		//Adds amount stock to player's account
-		String key = Pair(player, stock);
-		if(ownedStock.containsKey(key)){
-			ownedStock.put(key, ownedStock.get(key) + amount);
-		}
-		else
-			ownedStock.put(key, amount);
-	}
-	
-	public boolean removeStocks(String player, String stock, int amount){
-		//I think we get the point by now
-		String key = Pair(player, stock);
-		if(ownedStock.containsKey(key)){
-			if(ownedStock.get(key) >= amount){
+	public boolean moveStocks(String fromPlayer, String toPlayer, String stock, int amount){
+		String frm = pair(fromPlayer, stock);
+		String to = pair(toPlayer, stock);
+		if(ownedStock.containsKey(frm)){//Check to see if they own any stocks of that kind
+			if(ownedStock.get(frm) >= amount){//Check to see if they own enough
 				//Remove the stock
-				ownedStock.put(key, ownedStock.get(key) - amount);
-			} else { //User doesn't have enough of the stock
-				return false;
+				ownedStock.put(frm, ownedStock.get(frm) - amount);
+				if(ownedStock.containsKey(to)){
+					ownedStock.put(to, ownedStock.get(to) + amount);
+				}
+				else{
+					ownedStock.put(to, amount);
+				}
+				return true;
 			}
-		}else{ //User does not have the stock
-			return false;
 		}
-		return true; // Everything went better than expected. :)
+		return false; //From player didn't have enough stocks, that scoundral. >:(
 	}
-	
+
 	public boolean isStock(String check){
 		if(stockList.containsKey(check)){
 			return true;
@@ -73,10 +65,10 @@ public class MemoryCard {
 		stockList.put(stock.getCode(), stock);
 		return true;
 	}
-	
+
 	public int checkStockAmount(String player, String stock){
-		if(ownedStock.containsKey(Pair(player, stock))){
-			return ownedStock.get(Pair(player,stock));
+		if(ownedStock.containsKey(pair(player, stock))){
+			return ownedStock.get(pair(player,stock));
 		}
 		return 0;
 	}
