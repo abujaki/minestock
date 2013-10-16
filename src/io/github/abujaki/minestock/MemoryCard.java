@@ -73,4 +73,8 @@ public class MemoryCard {
 		}
 		return 0;
 	}
+	
+	public void giveStock(String player, String stock, int amount){
+		ownedStock.put(pair(player, stock), amount);
+	}
 }

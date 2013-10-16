@@ -13,6 +13,9 @@ public class TransactionEngine {
 		m = new MemoryCard();
 	}
 
+	public void load(){/*TODO*/}
+	public void save(){/*TODO*/}
+	
 	public void match(StockOrder order, boolean buy){
 		int index = 0;
 		int transfer = 0;
@@ -129,5 +132,9 @@ public class TransactionEngine {
 	//Passthrough methods
 	public int checkStockAmount(String name, String stock) {
 		return m.checkStockAmount(name, stock);
+	}
+	
+	public void giveStock(String player, String stock, int amount){
+		m.giveStock(player, stock, amount);
 	}
 }

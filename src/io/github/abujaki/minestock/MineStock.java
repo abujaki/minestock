@@ -44,9 +44,11 @@ public class MineStock extends JavaPlugin {
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
+		
 		setupPermissions();
-		setupChat();
 		//transactionEngine.load(); will load the unresolved orders from file
+		log.info("Setting up test values");
+		
 	}
 
 	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args){
@@ -157,20 +159,6 @@ public class MineStock extends JavaPlugin {
 		}
 		econ = rsp.getProvider();
 		return econ != null;
-	}
-
-	private boolean setupChat() {
-		RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager().getRegistration(Chat.class);
-		try{
-			chat = rsp.getProvider();
-			return chat != null;
-		}
-		catch(NullPointerException e){
-			//Yaknow, it may be because the testing server doesn't have a chat set up.....
-			//TODO: See if this error goes away when there's a chat plugin...
-			log.severe("Error in getting chat provider");
-			return false;
-		}
 	}
 
 	private boolean setupPermissions() {
