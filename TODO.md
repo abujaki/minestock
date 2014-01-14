@@ -41,6 +41,8 @@ Version 0.3.0
 Version 0.5.0
 [x] - Buy stocks complete
 [x] - Sell stocks complete
+[x] - Create stocks complete
+[ ] - Destroy stocks complete
 [ ] - Tested
 
 Version 0.!.0

@@ -18,8 +18,9 @@ v0.4.9 Developing build 132942
 
 Known Issues:
 ! SUPER CRAZY UNTESTED AT THIS POINT
-! Everything's held together with a lick and a promise at this point
+! Everything's held together with a lick and a promise so far
 ! Just because there are no compile errors does not mean it won't doom us all
+! DOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOMMMMMMMMMMMMMMMMM
 
 For past versions, consult the changelog
 

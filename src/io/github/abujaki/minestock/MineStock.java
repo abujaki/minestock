@@ -1,7 +1,7 @@
 /****************************************************\
  * MineStock Bukkit/Vault Plugin					*
  * Author: abujaki21							    *
- * Version: 0.4.9 Pre-alpha 132942					*
+ * Version: 0.4.9 Pre-alpha 140131					*
  * Description: Stock trading plugin for vault and	*
  * 	Bukkit-enabled minecraft servers				*
 \****************************************************/
@@ -27,10 +27,10 @@ public class MineStock extends JavaPlugin {
 	public static Economy econ = null;
 	public static Permission perms = null;
 	public static Chat chat = null; //May be removed entirely. Not important, and throws NPEs
-	//protected static MemoryCard memoryCard;
+	protected MemoryCard memoryCard = new MemoryCard();
 	protected TransactionEngine transactionEngine = new TransactionEngine();
 	private ChatColor colError = ChatColor.RED, colRoutine = ChatColor.DARK_GREEN, colTest = ChatColor.DARK_AQUA;
-	
+
 	//Enabler and Disabler
 	@Override
 	public void onDisable() {
@@ -45,11 +45,12 @@ public class MineStock extends JavaPlugin {
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
-		
+
 		setupPermissions();
 		//transactionEngine.load(); will load the unresolved orders from file
+		//memoryCard.load(); will load the previous state of the stocks form file
 		log.info("Setting up test values");
-		
+
 	}
 
 	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args){
@@ -104,7 +105,7 @@ public class MineStock extends JavaPlugin {
 					int amt = Integer.parseInt(args[1]);
 					int price = Integer.parseInt(args[2]);    	    	
 					if ((amt <= 0)||(price <= 0)){ //Smartass check
-						sender.sendMessage(colError + "You cannot buy with negative values.");
+						sender.sendMessage(colError + "You cannot sell with negative values.");
 						return false;
 					}
 					else return sellStock(sender, args[0], amt, price); //-----------Finally run the sellstock code
@@ -113,7 +114,65 @@ public class MineStock extends JavaPlugin {
 					return false; //arg 1 or 2 was not a number
 				}
 			}
-		}else return false;
+		}else if(command.getLabel().equalsIgnoreCase("stocklaunchIPO")){
+			//Stocks require a Friendly name, A code, and a controlling player
+			//Launching requres a number of stocks to be made, a number to be sold, and an opening price
+			if(args.length >= 7){ //too many arguments
+				sender.sendMessage(colError + "Too many arguments");
+				return false;
+			}
+			if(args.length <=5){ //Not enough arguments
+				sender.sendMessage(colError + "Not enough arguments");
+				return false;
+			}
+			try{
+				//Make those magic numbers.
+				String stockCode = args[0];
+				String friendlyName = args[1];
+				String player = args[2];
+				int numCreate = Integer.parseInt(args[3]);
+				int numSell = Integer.parseInt(args[4]);
+				float startingPrice = Float.parseFloat(args[5]);
+				if(numCreate <= 0){//Smartass check
+					sender.sendMessage(colError + "You can't create 0 or fewer stocks");
+					return false;
+				}
+				if(numCreate <= numSell){//Other smartass check
+					sender.sendMessage(colError + "You can't sell more stocks than exist");
+					return false;
+				}
+				//Selling 0 stocks, or selling stocks for 0 is allowed.
+				//But selling less than that is not
+				if((numSell < 0) || (startingPrice < 0)){
+					//Sell stock smartass check
+					sender.sendMessage(colError + "You can't sell with negative values");
+					return false;
+				}
+				//TODO - Check to make sure the receiving player is both:
+				//--Not the player making the IPO
+				//--Online
+
+				//All is well.
+				//Register the stock
+				if(memoryCard.registerStock(new Stock(stockCode, friendlyName, player))){
+					//Stock registered. Give stocks to owner
+					transactionEngine.giveStock(player, stockCode, numCreate);
+					//Sell the stocks
+					StockOrder ipo = new StockOrder(stockCode, numSell, startingPrice, player);
+					transactionEngine.match(ipo, false);
+					sender.sendMessage(colRoutine + "Stock " + stockCode + "(" + friendlyName + ") has been successfully registered.");
+					sender.sendMessage(colRoutine + "" + numCreate + " stocks were created, and dispensed to " + player);
+					sender.sendMessage(colRoutine + "" + numSell + "/" + numCreate + "of those stocks are on the market for " + startingPrice + econ.currencyNamePlural() + " each.");
+					return true;
+				}
+			}
+			catch (NumberFormatException e){
+				// arguments 4,5,6 were not numbers
+				sender.sendMessage(colError + "Incorrect arguments");
+				return false;
+			}
+		}
+		return false;
 	}
 
 	private boolean buyStock(CommandSender sender, String stock, int amount, int priceEach){

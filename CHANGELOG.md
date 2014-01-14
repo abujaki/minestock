@@ -2,6 +2,7 @@ Version History
 ===============
 
 =====0.4.9 Development
++ IPO Launch command
 + Storage Layer
 + Methods to check and create orders
 + Everything's starting to work together

@@ -1,5 +1,5 @@
 name: MineStock
-version: 0.4.9pre-alpha 132942
+version: 0.4.9pre-alpha 140131
 description: A simple stock-trading plugin for Bukkit/Vault servers
 author: abujaki21
 website: http://abujaki21.github.io/minestock/
@@ -16,6 +16,11 @@ commands:
     usage: /stocksell <stock> <amount> <priceEach>
     permission: minestock.sell
     permission-message: You do not have permission to buy stocks from the market.
+  stocklaunchipo:
+    description: Launch an IPO on the stock market
+    usage: /stocklaunchipo <stockCode><FriendlyName><Owner><AmtCreating><AmtSelling><OpeningPrice>
+    permission: minestock.launchIPO
+    permission-message: You do not have permission to launch an IPO
 permissions:
   minestock.basic:
     description: Allows a user to conduct basic transactions in the stock market
@@ -27,3 +32,6 @@ permissions:
     description: Allows a user to buy stocks from the stock market
   minestock.sell:
     description: Allows a user to sell stocks on the stock market
+  minestock.launchIPO
+    description: Allows a user to launch an IPO to the stock market
+    default: op
