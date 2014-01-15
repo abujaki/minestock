@@ -1,7 +1,7 @@
 /****************************************************\
  * MineStock Bukkit/Vault Plugin					*
  * Author: abujaki21							    *
- * Version: 0.4.9 Pre-alpha 140131					*
+ * Version: 0.4.9 Pre-alpha 140141					*
  * Description: Stock trading plugin for vault and	*
  * 	Bukkit-enabled minecraft servers				*
 \****************************************************/
@@ -27,7 +27,6 @@ public class MineStock extends JavaPlugin {
 	public static Economy econ = null;
 	public static Permission perms = null;
 	public static Chat chat = null; //May be removed entirely. Not important, and throws NPEs
-	protected MemoryCard memoryCard = new MemoryCard();
 	protected TransactionEngine transactionEngine = new TransactionEngine();
 	private ChatColor colError = ChatColor.RED, colRoutine = ChatColor.DARK_GREEN, colTest = ChatColor.DARK_AQUA;
 
@@ -54,6 +53,8 @@ public class MineStock extends JavaPlugin {
 	}
 
 	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args){
+		//--------------------Start of Command Block--------------------\\
+		//===================================================Buy Stocks
 		if(command.getLabel().equalsIgnoreCase("stockbuy")){
 			//stockbuy stock amount priceeach
 			if(!(sender instanceof Player)){
@@ -84,7 +85,9 @@ public class MineStock extends JavaPlugin {
 					return false; //arg 1 or 2 was not a number
 				}
 			}
-		}else if(command.getLabel().equalsIgnoreCase("stocksell")){
+		}
+		//===================================================Sell Stocks
+		else if(command.getLabel().equalsIgnoreCase("stocksell")){
 			//stockbuy stock amount priceeach
 			if(!(sender instanceof Player)){
 				sender.sendMessage(colError + "This command requires you to be a logged in player");
@@ -114,7 +117,10 @@ public class MineStock extends JavaPlugin {
 					return false; //arg 1 or 2 was not a number
 				}
 			}
-		}else if(command.getLabel().equalsIgnoreCase("stocklaunchIPO")){
+		}
+		//===================================================Cancel stock order
+		//===================================================Launch Stock IPO
+		else if(command.getLabel().equalsIgnoreCase("stocklaunchIPO")){
 			//Stocks require a Friendly name, A code, and a controlling player
 			//Launching requres a number of stocks to be made, a number to be sold, and an opening price
 			if(args.length >= 7){ //too many arguments
@@ -129,7 +135,7 @@ public class MineStock extends JavaPlugin {
 				//Make those magic numbers.
 				String stockCode = args[0];
 				String friendlyName = args[1];
-				String player = args[2];
+				String plOwn = args[2];
 				int numCreate = Integer.parseInt(args[3]);
 				int numSell = Integer.parseInt(args[4]);
 				float startingPrice = Float.parseFloat(args[5]);
@@ -148,22 +154,32 @@ public class MineStock extends JavaPlugin {
 					sender.sendMessage(colError + "You can't sell with negative values");
 					return false;
 				}
-				//TODO - Check to make sure the receiving player is both:
-				//--Not the player making the IPO
-				//--Online
+				//Check to make sure the receiving player is both:
+				if((getServer().getPlayer(plOwn).isOnline()) && //Online
+						(getServer().getPlayer(plOwn).getName() != sender.getName())){ //Not the broker
 
-				//All is well.
-				//Register the stock
-				if(memoryCard.registerStock(new Stock(stockCode, friendlyName, player))){
-					//Stock registered. Give stocks to owner
-					transactionEngine.giveStock(player, stockCode, numCreate);
-					//Sell the stocks
-					StockOrder ipo = new StockOrder(stockCode, numSell, startingPrice, player);
-					transactionEngine.match(ipo, false);
-					sender.sendMessage(colRoutine + "Stock " + stockCode + "(" + friendlyName + ") has been successfully registered.");
-					sender.sendMessage(colRoutine + "" + numCreate + " stocks were created, and dispensed to " + player);
-					sender.sendMessage(colRoutine + "" + numSell + "/" + numCreate + "of those stocks are on the market for " + startingPrice + econ.currencyNamePlural() + " each.");
-					return true;
+					//All is well.
+					//Register the stock
+					if(transactionEngine.registerStock(new Stock(stockCode, friendlyName, plOwn))){
+						//Stock registered. Give stocks to owner
+						transactionEngine.giveStock(plOwn, stockCode, numCreate);
+						//Sell the stocks
+						StockOrder ipo = new StockOrder(stockCode, numSell, startingPrice, plOwn);
+						transactionEngine.match(ipo, false);
+						//Notify Broker
+						sender.sendMessage(colRoutine + "Stock " + stockCode + "(" + friendlyName + ") has been successfully registered.");
+						sender.sendMessage(colRoutine + "" + numCreate + " stocks were created, and dispensed to " + plOwn);
+						sender.sendMessage(colRoutine + "" + numSell + "/" + numCreate + "of those stocks are on the market for " + startingPrice + econ.currencyNamePlural() + " each.");
+						//Notify controlling player
+						getServer().getPlayer(plOwn).sendMessage(colRoutine + "Stock " + stockCode + "(" + friendlyName + ") has been successfully registered for you.");
+						getServer().getPlayer(plOwn).sendMessage(colRoutine + "" + numCreate + " stocks were created, and dispensed to you by " + sender.getName());
+						getServer().getPlayer(plOwn).sendMessage(colRoutine + "" + numSell + "/" + numCreate + "of those stocks have been put on the market for " + startingPrice + econ.currencyNamePlural() + " each.");
+						return true;
+					}
+					else{
+						sender.sendMessage(colError + stockCode + " is already taken. The stock was not registered");
+						return false;
+					}
 				}
 			}
 			catch (NumberFormatException e){
@@ -172,6 +188,7 @@ public class MineStock extends JavaPlugin {
 				return false;
 			}
 		}
+		//--------------------End of commands block--------------------\\
 		return false;
 	}
 

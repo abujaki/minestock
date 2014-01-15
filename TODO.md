@@ -54,6 +54,7 @@ Mandatory before moving onto 1.0.0
 [ ] - Tested
 
 [ ] - Load plugin information
+	[/] - Interface Layer (Nothing here either)
 	[ ] - Layer data
 	[ ] - preferences and configs
 [ ] - Tested
@@ -70,3 +71,8 @@ Highly reccommended before moving onto 1.0.0
 Version 1.0.0
 [ ] - Stable build release
 [ ] - TESTED and works (well enough)
+
+Version 1.5+
+[ ] - Dividends
+[ ] - System to pay out divedends
+[ ] - Instruction Booklet

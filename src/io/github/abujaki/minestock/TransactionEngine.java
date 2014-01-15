@@ -5,7 +5,7 @@ import java.util.List;
 public class TransactionEngine {
 
 	private List<StockOrder> buyOrders, sellOrders;
-	private MemoryCard m;
+	protected MemoryCard m;
 	/*Private list of stocks*/
 
 	TransactionEngine(/*Stock list of some sort*/){
@@ -28,7 +28,7 @@ public class TransactionEngine {
 
 				//Check to see if the stock matches
 				if(order.getStock()==sellOrder.getStock()){
-					//Check to see that the buyer is offering more than the seller wants
+					//Check to see that the buyer is offering more money than the seller wants
 					if(order.getPrice() >= sellOrder.getPrice()){
 						//Validate that they still have enough to sell
 						if(validateAmount(sellOrder.getPlayer(), sellOrder.getStock(), sellOrder.getAmount())){
@@ -137,4 +137,9 @@ public class TransactionEngine {
 	public void giveStock(String player, String stock, int amount){
 		m.giveStock(player, stock, amount);
 	}
+
+	public boolean registerStock(Stock stock) {
+		return m.registerStock(stock);
+	}
+	
 }

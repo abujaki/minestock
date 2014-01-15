@@ -1,5 +1,5 @@
 name: MineStock
-version: 0.4.9pre-alpha 140131
+version: 0.4.9pre-alpha 140141
 description: A simple stock-trading plugin for Bukkit/Vault servers
 author: abujaki21
 website: http://abujaki21.github.io/minestock/
@@ -34,4 +34,9 @@ permissions:
     description: Allows a user to sell stocks on the stock market
   minestock.launchIPO
     description: Allows a user to launch an IPO to the stock market
+  minestock.broker
+    description: Allows a user to perform broker functions
+    children:
+      minestock.basic: true
+      minestock.launchIPO: true
     default: op
